@@ -1,4 +1,3 @@
-//Run the script with the "wx" arguments. This will NOT overwrite a file that already exists.
 //Take the "x" out and it will overwrite an existing file. Its useful in some cases, but more to identify a bug early in the dev cycle.
 //Similarly for open take the O_CREAT|O_EXCL argument out. That controls the overwrite of the file.
 
@@ -12,21 +11,35 @@
 int main(int argc, char *argv[1]) {
     FILE *fp;
 
-    //Using fopen
-    fp = fopen("test3", "wx");
+    /*
+        Doing this will cause a file to be overwritten, assuming the user has permissions to do so. Sometimes this might be intended behavior
+        in which case, this test can be ignored. 
+        - fopen: Adding the 'x' flag, prevents this from happening.
+        - open:  Adding the O_CREAT and O_EXCL flags prevents this from happening.
+    */
     //fp = fopen("test3", "w");
+    
+    /*
+        This is how it needs to be written. The "test3" file will not be overwritten if it exists and these flags are set.
+    */
+    fp = fopen("test3", "wx");
     if (fp == NULL){
-        printf("%s\n","Fopen - File already exists. Cannot overwrite it.\n");
-    }
-
-    //Using open
-    int fd;
-    //fd = open("test34", O_CREAT|O_WRONLY|O_EXCL);
-    fd = open("test34", O_WRONLY);
-    if (fd == -1){
-        printf("%s\n","Open - File already exists. Cannot overwrite it.\n");
+        printf("Fopen - File already exists. Cannot overwrite it.\n");
     }
     else{
-        printf("%s\n","Opening file in write mode\n");
+        printf("Fopen - Opening file in write mode.\n");
+    }
+
+    int fd;
+    //fd = open("test34", O_WRONLY);
+    /*
+        This is how it needs to be written. The "test34" file will not be overwritten if it exists and these flags are set.
+    */
+    fd = open("test34", O_CREAT|O_WRONLY|O_EXCL);
+    if (fd == -1){
+        printf("Open - File already exists. Cannot overwrite it.\n");
+    }
+    else{
+        printf("Open - Opening file in write mode\n");
     }
 }

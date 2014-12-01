@@ -1,25 +1,27 @@
-//https://www.securecoding.cert.org/confluence/display/seccode/FIO06-C.+Create+files+with+appropriate+access+permissions
-
-
 #include <fcntl.h>
 #include <stdio.h>
 
 int main() {
     char *file_name="test1";
     int file_access_permissions;
-    file_access_permissions = 0700; //The 0700 is important - it can't be 700.
      
-    /*Undefined behavior if permissions are not set on a file as a 3rd argument in the open() call. */
-    //int fd = open( file_name, O_CREAT|O_WRONLY);
-
-    int fd = open( file_name, O_CREAT|O_WRONLY, file_access_permissions);
+    /*
+        Undefined behavior if permissions are not set on a file as a 3rd argument in the open() call. Files with random permissions get created.
+    */
+    int fd = open( file_name, O_CREAT|O_WRONLY);
 
     /*
-    If the file is created with 0100 the TRUNC fails, but if it was created with 0700 it succeeds. 'rm' from the shell directly though
-    succeeds in both cases. It's unclear why.
+        This is the correct way to use the open() call - with the 3rd permission argument. 
+        
+        Interestingly though, if the file is created with 0100 the TRUNC fails, but if it was created with 0700 it succeeds. 'rm' from the shell 
+        directly though succeeds in both cases.  It's unclear why - even though I don't have any permissions in the first case.
     */
-    int fd = open( file_name, O_TRUNC);
 
+    /*
+    file_access_permissions = 0700; 
+    int fd = open( file_name, O_CREAT|O_WRONLY, file_access_permissions);
+    */
+    fd = open( file_name, O_TRUNC);
     if (fd == -1){
         printf("%s\n", "Could not perform file operation");
     }

@@ -1,5 +1,3 @@
-//https://www.securecoding.cert.org/confluence/display/seccode/FIO08-C.+Take+care+when+calling+remove%28%29+on+an+open+file
-
 #include <stdio.h>
 
 int main() {
@@ -14,10 +12,9 @@ int main() {
     
     /* 
     In certain implementations (apparently Windows) remove() doesn't remove the file as the file descriptor isn't yet closed. In Ubuntu remove() 
-    internally calls unlink() which is the correct behavior.
+    internally calls unlink() which is the correct behavior - so really both the methods are correct.
     */
 
-    
     if (remove("test1") != 0) {
         printf("%s\n","Could not remove file\n");
     }
@@ -33,5 +30,5 @@ int main() {
         printf("File not found\n");
     }
      
-    //fclose(file);
+    fclose(file);
 }

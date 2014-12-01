@@ -1,4 +1,3 @@
-fio05 inode check fails as the OS retains an old inode even after file removal.
 fio09 - unclear how this is a vulnerability. Not implementing right now.
 fio15 - easier to do this with OS permissions. Not using the function that is written there.
 fio34 - skip this for now

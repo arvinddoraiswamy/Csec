@@ -1,0 +1,20 @@
+Whetstone goal:
+Objective
+
+To be able to review and write secure code in C
+
+Key Results
+    Read a book on Secure Code Review in C.
+    Convert this into a checklist/test plan/template.
+    Write an insecure/secure application in C similar to what I did with Java.
+    Use the exploits that I developed in my reverse engineering goal as payloads here.
+
+Reviewer Comments:
+Good goal. Do you have much of a C background currently? One thing I've always learned a lot from is looking at bugs (not necessarily security) in open source projects, and contributing fixes if possible.
+---------
+
+Detailed notes:
+- Need to identify a book (Kernighan/Ritchie of course, Robert Seacord is another one). I'd prefer to buy Kindle versions of both so I can read them at any time.
+- Use CERT secure coding guide online to try and develop a testing checklist for as many vulnerabilities as possible. [https://www.securecoding.cert.org/confluence/display/seccode/CERT+C+Coding+Standard]
+- Try and start off a document like my Java document and add to it as life goes on :)
+- Look at Wireshark code base and try and do a code review for parts of it
