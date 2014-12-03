@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
  
 int main (void) {
  
@@ -33,9 +34,10 @@ int main (void) {
 
     /* 
        Reading just 6 characters. The point we're trying to demonstrate here is that if string length that is copied is smaller than the file
-       it won't be null terminated and we'll have to terminate it ourselves.
+       it won't be null terminated and we'll have to terminate it ourselves. Also IF the file itself isn't null-terminated, that too is a
+       problem as fread() will just read ...not add a null char if it doesn't see one.
       
-       Here we set the 7th and 8th character to known values. So now when the buffer is printed, you can clearly see that there isn't any
+       Here we set some following characters to known values. So now when the buffer is printed, you can clearly see that there isn't any
        null termination. So in real life, maybe there's sensitive content in the 7th and 8th character and all that gets echoed to screen.
     */
 
@@ -50,9 +52,14 @@ int main (void) {
  
     if (fread(buffer, 1, size, fp) < size) {
         printf("Reading from file failed\n");
+        exit(0);
     }
     fclose(fp);
  
+    /*
+        Add a null byte yourself, else it'll print everything till it sees one.
+    */
+    buffer[5] = '\0';
     printf("Buffer is - %s\n",buffer);
 
     return 0;

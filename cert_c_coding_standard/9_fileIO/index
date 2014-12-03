@@ -7,3 +7,4 @@ FIO-08  |   Removing a file from the disk. Both methods equally effective.
 FIO-10  |   Renaming a file when it already exists.
 FIO-11  |   Ensure that the correct flags for fopen() to avoid segfaults.
 FIO-13  |   Ensure that file position indicators are adjusted properly between calls to ungetc().
+FIO-14  |   Using file streams correctly in binary mode.
