@@ -5,6 +5,7 @@
 int main() {
     char *buffer = NULL;
     size_t size1;
+    size_t size2;
     FILE *filedes;
      
     filedes = fopen("out.txt", "w+");
@@ -19,38 +20,34 @@ int main() {
         printf("Could not allocate memory\n");
     }
 
-    /* Copies the first 6 characters of the alphabet string into the buffer. Note that there is no null byte here. */
-    strncpy(buffer, "abcdef", 6);
+    /* Copies 8 characters of the alphabet string into the buffer. Note that byte 5 is a null byte here. */
+    buffer[0]= 'a';
+    buffer[1]= 'b';
+    buffer[2]= 'c';
+    buffer[3]= 'd';
+    buffer[4]= '\0';
+    buffer[5]= 'f';
+    buffer[6]= 'g';
+    buffer[7]= 'p';
 
-    /* Add a null byte like this as the last character */
-    //strncpy(buffer, "abcde\0", 6);
+    /* Despite the null byte being there at byte 5, fwrite ignores it and just copies 8 bytes into buffer and hence out.txt.
+       Verify this using wc -c out.txt or hexdump -C out.txt
+    */
+    size2= 8;
 
-    fwrite(buffer, 1, 6, filedes);
-
-    /* Write a few more characters in for demo purposes. The file will now contain abcdefpassword - a total of 14 characters */
-    fwrite("password", 1, 8, filedes);
+    /*
+        Always set the amount to write based on the size of the buffer you are writing
+    */
+    //size2= strlen(buffer)+1;
+    
+    fwrite(buffer, 1, size2, filedes);
 
     free(buffer);
     buffer = NULL;
     fclose(filedes);
 
-    /* The problem now starts when another part of the program assumes that the string was null-byte terminated and tries to read 7 chars
-       In reality a null byte was never written and hence the 7th character is leaked instead.
-    */
-
-    filedes = fopen("out.txt", "r");
-    if (filedes == NULL){
-        printf("Could not open file\n");
-    }
-    buffer = (char *)calloc( 1, 10);
-    if (buffer == NULL) {
-        printf("Could not allocate memory\n");
-    }
-
     /*
-        Note that the code tries to read back 7 characters, assuming that there is a null byte too that has been written to the file.
-        But since there 
+        This could be a problem IF there is some program which reads the file and uses all of the information inside to do something with it
+        but ignores the null character.
     */
-    fread(buffer, 1, 7, filedes);
-    printf("Buffer read from file is %s\n", buffer);
 }

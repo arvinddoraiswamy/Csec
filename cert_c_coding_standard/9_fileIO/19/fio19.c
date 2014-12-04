@@ -1,22 +1,22 @@
-//https://www.securecoding.cert.org/confluence/display/seccode/FIO19-C.+Do+not+use+fseek%28%29+and+ftell%28%29+to+compute+the+size+of+a+regular+file
-//https://stackoverflow.com/questions/5957845/using-fseek-and-ftell-to-determine-the-size-of-a-file-has-a-vulnerability
-
-/* Seems to work okay though, even with plenty of garbage null characters at the end of the file */
-/* Checked by comparing output with the 'wc' binary */
-
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int main() {
     FILE *fp;
     long file_size;
     char *buffer;
+    int i=0;
      
     fp = fopen("foo.txt", "rb");
     if (fp == NULL) {
         printf("Cannot open file\n");
     }
      
+    /*
+        Using this method to calculate file size is apparently not recommended. But it works on all POSIX supporting systems, apparently.
+        So TL;DR - There's no vulnerability here :)
+    */
     if (fseek(fp, 0 , SEEK_END) != 0) {
         printf("Cannot reposition file pointer\n");
     }
@@ -32,5 +32,18 @@ int main() {
     buffer = (char*)malloc(file_size);
     if (buffer == NULL) {
         printf("Size allocation failed\n");
+    }
+    else{
+        i=0;
+        int count= 0;
+        while (i < file_size-1) {
+            buffer[i] = 'a';
+            printf("%d\t%c\n", count, buffer[i]);
+            count+=1;
+            i+=1;
+        }
+        buffer[file_size-1]='\0';
+        printf("Length of buffer is %lu\n", strlen(buffer));
+        printf("Buffer is %s\n", buffer);
     }
 }
