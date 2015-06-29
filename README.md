@@ -7,6 +7,6 @@ The first step will be to simply read through the issue, download and compile co
 
 Anyone, in the end, should be able to read a page there, run the vulnerable code and then run the simple non-malicious exploit against the vulnerable code to understand how things work.
 
-Here is the base URL that all my work is based on - https://www.securecoding.cert.org/confluence/display/seccode/CERT+C+Coding+Standard
+Here is the base URL that all my work is based on - https://www.securecoding.cert.org/confluence/display/c/SEI+CERT+C+Coding+Standard
 
 There isn't any deadline for this work - it is a work in progress and I will keep reading and uploading as and when I get time :)
